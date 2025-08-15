@@ -15,6 +15,11 @@ async function bootstrap() {
   // Apply global interceptor for time execution monitoring
   app.useGlobalInterceptors(new TimeExecutingInterceptor());
 
+  // Enable CORS
+  app.enableCors({
+    origin: '*',
+  });
+
   // Setup Swagger API documentation
   setupSwagger(app);
 

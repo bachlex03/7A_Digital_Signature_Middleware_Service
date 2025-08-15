@@ -4,6 +4,7 @@ import { Module } from '@nestjs/common';
 import { configuration } from './configs/env/env.config';
 import { envValidationSchema } from './configs/env/validation';
 import { LoggerModule } from './logger/logger.module';
+import { SampleModule } from './modules/sample/sample.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { LoggerModule } from './logger/logger.module';
       validationSchema: envValidationSchema,
     }),
     LoggerModule,
+    SampleModule,
   ],
   controllers: [],
   providers: [],
