@@ -41,6 +41,15 @@
 - [x] Apply global filter in main.ts bootstrap
 - [x] Provide consistent error response format
 
+## Interceptors
+
+- [x] Create TimeExecutingInterceptor for performance monitoring
+- [x] Implement request/response timing measurement
+- [x] Add execution time to response headers
+- [x] Generate unique request IDs for tracking
+- [x] Apply global interceptor in main.ts bootstrap
+- [x] Provide comprehensive performance logging
+
 ## 🚦 Basic Functionality
 
 - [x] Implement basic "Hello World" service
