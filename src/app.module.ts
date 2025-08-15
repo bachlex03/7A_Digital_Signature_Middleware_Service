@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 
-import { AppService } from './app.service';
 import { configuration } from './configs/env/env.config';
 import { envValidationSchema } from './configs/env/validation';
+import { LoggerModule } from './logger/logger.module';
 
 @Module({
   imports: [
@@ -14,8 +13,9 @@ import { envValidationSchema } from './configs/env/validation';
       isGlobal: true,
       validationSchema: envValidationSchema,
     }),
+    LoggerModule,
   ],
   controllers: [],
-  providers: [AppService],
+  providers: [],
 })
 export class AppModule {}
