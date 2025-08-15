@@ -33,9 +33,15 @@
 
 - [x] Create AppLoggerService with dependency injection (singleton)
 
-## Middlewares
+## Exception filters
 
-<!-- ## 🚦 Basic Functionality
+- [x] Create GlobalExceptionFilter for catching all errors
+- [x] Create HttpExceptionFilter for catching all HttpException errors
+- [x] Implement comprehensive error handling with logging
+- [x] Apply global filter in main.ts bootstrap
+- [x] Provide consistent error response format
+
+## 🚦 Basic Functionality
 
 - [x] Implement basic "Hello World" service
 - [x] Set up basic routing

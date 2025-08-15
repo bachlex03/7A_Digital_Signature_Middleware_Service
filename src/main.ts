@@ -1,9 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { AppLoggerService } from './logger/logger.service';
+import { GlobalExceptionFilter } from './libs/filters/global-exception.filter';
+import { HttpExceptionFilter } from './libs/filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // Apply global exception filter
+  app.useGlobalFilters(new GlobalExceptionFilter(), new HttpExceptionFilter());
 
   const logger = app.get(AppLoggerService);
 
