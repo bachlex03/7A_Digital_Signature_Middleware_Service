@@ -3,7 +3,8 @@ import { AppModule } from './app.module';
 import { AppLoggerService } from './logger/logger.service';
 import { GlobalExceptionFilter } from './libs/filters/global-exception.filter';
 import { HttpExceptionFilter } from './libs/filters/http-exception.filter';
-import { TimeExecutingInterceptor } from './libs/interceptors';
+import { TimeExecutingInterceptor } from './libs/interceptors/time-executing.interceptor';
+import { setupSwagger } from './extensions/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,6 +14,9 @@ async function bootstrap() {
 
   // Apply global interceptor for time execution monitoring
   app.useGlobalInterceptors(new TimeExecutingInterceptor());
+
+  // Setup Swagger API documentation
+  setupSwagger(app);
 
   const logger = app.get(AppLoggerService);
 
@@ -24,10 +28,10 @@ async function bootstrap() {
     'Bootstrap',
   );
 
-  // logger.debug(
-  //   `📚 Swagger documentation: ${await app.getUrl()}/api-docs`,
-  //   'Bootstrap',
-  // );
+  logger.debug(
+    `📚 Swagger documentation: ${await app.getUrl()}/api-docs`,
+    'Bootstrap',
+  );
 }
 
 bootstrap().catch((error) => {
