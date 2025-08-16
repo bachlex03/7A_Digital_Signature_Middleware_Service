@@ -92,6 +92,25 @@
 - [x] Implement service discovery endpoints
 - [x] Add API versioning support
 
+## Sample Module
+
+- [x] Create SampleModule with proper module structure
+- [x] Implement SampleService with CRUD operations
+- [x] Create SampleController with Swagger integration
+- [x] Restructure from DTOs to contracts directory
+- [x] Set up request/response contracts for API documentation
+- [x] Integrate SampleModule in main AppModule
+- [x] Implement comprehensive Swagger decorators
+- [x] Add validation decorators for input validation
+- [x] Implement Result Pattern for error handling
+- [x] Create centralized error definitions
+- [x] Update service methods to return Result<T, E>
+- [x] Update controller to handle Result pattern responses
+- [x] Create centralized ErrorController for error handling
+- [x] Implement base ApiController with Result pattern handling
+- [x] Update SampleController to extend base ApiController
+- [x] Centralize error responses and HTTP status mapping
+
 ## 🗄️ Data Layer (Server-to-Server)
 
 - [ ] Set up database connection for audit logs

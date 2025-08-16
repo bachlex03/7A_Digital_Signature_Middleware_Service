@@ -1,61 +1,83 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateSampleDto } from '../../contracts/requests/sample/create-sample.request';
 import { UpdateSampleDto } from '../../contracts/requests/sample/update-sample.request';
 import { SampleResponseDto } from '../../contracts/responses/sample/create-sample.response';
+import { Result, success, failure } from '../../libs/result';
+import { Errors } from '../../libs/errors';
 
 @Injectable()
 export class SampleService {
   private samples: SampleResponseDto[] = [];
   private nextId = 1;
 
-  create(createSampleDto: CreateSampleDto): SampleResponseDto {
-    const sample: SampleResponseDto = {
-      id: this.generateId(),
-      ...createSampleDto,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+  create(createSampleDto: CreateSampleDto): Result<SampleResponseDto> {
+    try {
+      const sample: SampleResponseDto = {
+        id: this.generateId(),
+        ...createSampleDto,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
 
-    throw new NotFoundException(`Sample with ID not found`); // for testing
+      return failure(Errors.Sample.CannotBeCreated);
 
-    this.samples.push(sample);
-    return sample;
+      this.samples.push(sample);
+      return success(sample);
+    } catch (error) {
+      return failure(Errors.Sample.CannotBeCreated);
+    }
   }
 
-  findAll(): SampleResponseDto[] {
-    return this.samples;
+  findAll(): Result<SampleResponseDto[]> {
+    try {
+      return success(this.samples);
+    } catch (error) {
+      return failure(Errors.Sample.CannotBeCreated);
+    }
   }
 
-  findOne(id: string): SampleResponseDto {
+  findOne(id: string): Result<SampleResponseDto> {
     const sample = this.samples.find((s) => s.id === id);
     if (!sample) {
-      throw new NotFoundException(`Sample with ID ${id} not found`);
+      return failure(Errors.Sample.DoesNotExist);
     }
-    return sample;
+    return success(sample);
   }
 
-  update(id: string, updateSampleDto: UpdateSampleDto): SampleResponseDto {
+  update(
+    id: string,
+    updateSampleDto: UpdateSampleDto,
+  ): Result<SampleResponseDto> {
     const index = this.samples.findIndex((s) => s.id === id);
     if (index === -1) {
-      throw new NotFoundException(`Sample with ID ${id} not found`);
+      return failure(Errors.Sample.DoesNotExist);
     }
 
-    this.samples[index] = {
-      ...this.samples[index],
-      ...updateSampleDto,
-      updatedAt: new Date(),
-    };
+    try {
+      this.samples[index] = {
+        ...this.samples[index],
+        ...updateSampleDto,
+        updatedAt: new Date(),
+      };
 
-    return this.samples[index];
+      return success(this.samples[index]);
+    } catch (error) {
+      return failure(Errors.Sample.CannotBeUpdated);
+    }
   }
 
-  remove(id: string): void {
+  remove(id: string): Result<void> {
     const index = this.samples.findIndex((s) => s.id === id);
     if (index === -1) {
-      throw new NotFoundException(`Sample with ID ${id} not found`);
+      return failure(Errors.Sample.DoesNotExist);
     }
 
-    this.samples.splice(index, 1);
+    try {
+      this.samples.splice(index, 1);
+      return success(undefined);
+    } catch (error) {
+      return failure(Errors.Sample.CannotBeDeleted);
+    }
   }
 
   private generateId(): string {

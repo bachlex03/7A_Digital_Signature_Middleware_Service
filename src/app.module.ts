@@ -5,6 +5,7 @@ import { configuration } from './configs/env/env.config';
 import { envValidationSchema } from './configs/env/validation';
 import { LoggerModule } from './logger/logger.module';
 import { SampleModule } from './modules/sample/sample.module';
+import { ErrorController } from './libs/controllers/error.controller';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { SampleModule } from './modules/sample/sample.module';
     LoggerModule,
     SampleModule,
   ],
-  controllers: [],
+  controllers: [ErrorController],
   providers: [],
 })
 export class AppModule {}

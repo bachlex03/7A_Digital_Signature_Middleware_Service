@@ -8,6 +8,7 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  Res,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -21,15 +22,19 @@ import {
   ApiBadRequestResponse,
   ApiInternalServerErrorResponse,
 } from '@nestjs/swagger';
+import type { Response } from 'express';
 import { SampleService } from './sample.service';
 import { CreateSampleDto } from '../../contracts/requests/sample/create-sample.request';
 import { UpdateSampleDto } from '../../contracts/requests/sample/update-sample.request';
 import { SampleResponseDto } from '../../contracts/responses/sample/create-sample.response';
+import { ApiController } from 'src/libs/controllers/api.controller';
 
 @ApiTags('samples')
 @Controller('samples')
-export class SampleController {
-  constructor(private readonly sampleService: SampleService) {}
+export class SampleController extends ApiController {
+  constructor(private readonly sampleService: SampleService) {
+    super();
+  }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -74,8 +79,12 @@ export class SampleController {
   @ApiInternalServerErrorResponse({
     description: 'Internal server error',
   })
-  create(@Body() createSampleDto: CreateSampleDto): SampleResponseDto {
-    return this.sampleService.create(createSampleDto);
+  create(
+    @Body() createSampleDto: CreateSampleDto,
+    @Res() res: Response,
+  ): Response {
+    const result = this.sampleService.create(createSampleDto);
+    return this.handleResult(result, res);
   }
 
   @Get()
@@ -90,8 +99,9 @@ export class SampleController {
   @ApiInternalServerErrorResponse({
     description: 'Internal server error',
   })
-  findAll(): SampleResponseDto[] {
-    return this.sampleService.findAll();
+  findAll(@Res() res: Response): Response {
+    const result = this.sampleService.findAll();
+    return this.handleResult(result, res);
   }
 
   @Get(':id')
@@ -114,8 +124,9 @@ export class SampleController {
   @ApiInternalServerErrorResponse({
     description: 'Internal server error',
   })
-  findOne(@Param('id') id: string): SampleResponseDto {
-    return this.sampleService.findOne(id);
+  findOne(@Param('id') id: string, @Res() res: Response): Response {
+    const result = this.sampleService.findOne(id);
+    return this.handleResult(result, res);
   }
 
   @Patch(':id')
@@ -158,8 +169,10 @@ export class SampleController {
   update(
     @Param('id') id: string,
     @Body() updateSampleDto: UpdateSampleDto,
-  ): SampleResponseDto {
-    return this.sampleService.update(id, updateSampleDto);
+    @Res() res: Response,
+  ): Response {
+    const result = this.sampleService.update(id, updateSampleDto);
+    return this.handleResult(result, res);
   }
 
   @Delete(':id')
@@ -183,7 +196,8 @@ export class SampleController {
   @ApiInternalServerErrorResponse({
     description: 'Internal server error',
   })
-  remove(@Param('id') id: string): void {
-    return this.sampleService.remove(id);
+  remove(@Param('id') id: string, @Res() res: Response): Response {
+    const result = this.sampleService.remove(id);
+    return this.handleResult(result, res);
   }
 }
